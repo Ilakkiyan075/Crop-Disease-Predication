@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}Disease Information - Crop Disease Detection{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold text-primary">
+            <i class="fas fa-book-medical me-3"></i>Disease Information Database
+        </h1>
+        <p class="lead text-muted">Comprehensive guide to crop diseases, symptoms, and treatments</p>
+    </div>
+
+    <div class="row">
+        {% for disease_key, disease_data in diseases.items() %}
+        <div class="col-lg-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex align-items-center">
+                    <div class="me-3">
+                        {% if disease_key == 'healthy' %}
+                            <i class="fas fa-leaf text-success" style="font-size: 2rem;"></i>
+                        {% elif disease_key == 'apple_scab' %}
+                            <i class="fas fa-bug text-danger" style="font-size: 2rem;"></i>
+                        {% elif disease_key == 'bacterial_blight' %}
+                            <i class="fas fa-virus text-warning" style="font-size: 2rem;"></i>
+                        {% elif disease_key == 'powdery_mildew' %}
+                            <i class="fas fa-cloud text-info" style="font-size: 2rem;"></i>
+                        {% elif disease_key == 'leaf_spot' %}
+                            <i class="fas fa-circle text-dark" style="font-size: 2rem;"></i>
+                        {% elif disease_key == 'rust' %}
+                            <i class="fas fa-tint text-danger" style="font-size: 2rem;"></i>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h4 class="mb-1">{{ disease_data.name }}</h4>
+                        <small class="text-muted">{{ disease_key.replace('_', ' ').title() }}</small>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <p class="text-muted mb-4">{{ disease_data.description }}</p>
+                    
+                    <!-- Accordion for detailed info -->
+                    <div class="accordion" id="accordion{{ loop.index }}">
+                        <!-- Symptoms -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="symptoms{{ loop.index }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#symptomsCollapse{{ loop.index }}">
+                                    <i class="fas fa-stethoscope text-primary me-2"></i>
+                                    Symptoms ({{ disease_data.symptoms|length }})
+                                </button>
+                            </h2>
+                            <div id="symptomsCollapse{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordion{{ loop.index }}">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        {% for symptom in disease_data.symptoms %}
+                                        <li class="mb-2">
+                                            <i class="fas fa-circle text-primary me-2" style="font-size: 0.5rem;"></i>
+                                            {{ symptom }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Remedies -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="remedies{{ loop.index }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#remediesCollapse{{ loop.index }}">
+                                    <i class="fas fa-prescription-bottle-alt text-success me-2"></i>
+                                    Remedies ({{ disease_data.remedies|length }})
+                                </button>
+                            </h2>
+                            <div id="remediesCollapse{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordion{{ loop.index }}">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        {% for remedy in disease_data.remedies %}
+                                        <li class="mb-2">
+                                            <i class="fas fa-check text-success me-2"></i>
+                                            {{ remedy }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Prevention -->
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="prevention{{ loop.index }}">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#preventionCollapse{{ loop.index }}">
+                                    <i class="fas fa-shield-alt text-info me-2"></i>
+                                    Prevention ({{ disease_data.prevention|length }})
+                                </button>
+                            </h2>
+                            <div id="preventionCollapse{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#accordion{{ loop.index }}">
+                                <div class="accordion-body">
+                                    <ul class="list-unstyled">
+                                        {% for prevention in disease_data.prevention %}
+                                        <li class="mb-2">
+                                            <i class="fas fa-shield-alt text-info me-2"></i>
+                                            {{ prevention }}
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Additional Resources -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body text-center p-5">
+                    <h3 class="mb-4">
+                        <i class="fas fa-graduation-cap text-primary me-2"></i>
+                        Additional Resources
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <i class="fas fa-phone text-success" style="font-size: 2rem;"></i>
+                            </div>
+                            <h5>Extension Services</h5>
+                            <p class="text-muted">Contact your local agricultural extension office for personalized advice</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <i class="fas fa-microscope text-info" style="font-size: 2rem;"></i>
+                            </div>
+                            <h5>Plant Pathologists</h5>
+                            <p class="text-muted">Consult with certified plant pathologists for complex disease issues</p>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <i class="fas fa-store text-warning" style="font-size: 2rem;"></i>
+                            </div>
+                            <h5>Agricultural Supplies</h5>
+                            <p class="text-muted">Visit local agricultural supply stores for treatment products</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-5">
+        <h4 class="mb-3">Ready to Detect Diseases in Your Crops?</h4>
+        <a href="{{ url_for('upload_file') }}" class="btn btn-primary btn-lg">
+            <i class="fas fa-upload me-2"></i>Upload Image or Video
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add smooth scrolling for better UX
+    const accordionButtons = document.querySelectorAll('.accordion-button');
+    accordionButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            setTimeout(() => {
+                this.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 350);
+        });
+    });
+});
+</script>
+{% endblock %}

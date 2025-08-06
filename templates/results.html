@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}Detection Results - Crop Disease Detection{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Header -->
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary">
+                    <i class="fas fa-search-plus me-3"></i>Detection Results
+                </h1>
+                <p class="lead text-muted">Analysis complete for: <strong>{{ filename }}</strong></p>
+            </div>
+
+            <!-- Main Results Card -->
+            <div class="card result-card mb-4">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h3 class="mb-3">
+                                {% if prediction.disease == 'healthy' %}
+                                    <i class="fas fa-check-circle text-success me-2"></i>
+                                    <span class="text-success">{{ disease_info.name }}</span>
+                                {% else %}
+                                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                                    <span class="text-warning">{{ disease_info.name }} Detected</span>
+                                {% endif %}
+                            </h3>
+                            <p class="text-muted mb-3">{{ disease_info.description }}</p>
+                            
+                            <!-- Confidence Score -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="fw-semibold">Confidence Score</span>
+                                    <span class="badge bg-primary">{{ "%.1f"|format(prediction.confidence * 100) }}%</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar confidence-bar" style="width: {{ prediction.confidence * 100 }}%"></div>
+                                </div>
+                            </div>
+
+                            <!-- File Type Info -->
+                            {% if prediction.type == 'video' %}
+                                <div class="alert alert-info">
+                                    <i class="fas fa-video me-2"></i>
+                                    Video analysis completed. Processed {{ prediction.frame_count }} frames.
+                                </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-md-4 text-center">
+                            <div class="disease-icon mb-3">
+                                {% if prediction.disease == 'healthy' %}
+                                    <i class="fas fa-leaf text-success" style="font-size: 5rem;"></i>
+                                {% else %}
+                                    <i class="fas fa-bug text-danger" style="font-size: 5rem;"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Disease Information Tabs -->
+            <div class="card">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs" id="diseaseInfoTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="symptoms-tab" data-bs-toggle="tab" data-bs-target="#symptoms" type="button" role="tab">
+                                <i class="fas fa-stethoscope me-2"></i>Symptoms
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="remedies-tab" data-bs-toggle="tab" data-bs-target="#remedies" type="button" role="tab">
+                                <i class="fas fa-prescription-bottle-alt me-2"></i>Remedies
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="prevention-tab" data-bs-toggle="tab" data-bs-target="#prevention" type="button" role="tab">
+                                <i class="fas fa-shield-alt me-2"></i>Prevention
+                            </button>
+                        </li>
+                        {% if prediction.all_predictions %}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="detailed-tab" data-bs-toggle="tab" data-bs-target="#detailed" type="button" role="tab">
+                                <i class="fas fa-chart-bar me-2"></i>Detailed Analysis
+                            </button>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="diseaseInfoTabsContent">
+                        <!-- Symptoms Tab -->
+                        <div class="tab-pane fade show active" id="symptoms" role="tabpanel">
+                            <h5 class="mb-3">
+                                <i class="fas fa-list-ul text-primary me-2"></i>Symptoms to Look For
+                            </h5>
+                            <div class="row">
+                                {% for symptom in disease_info.symptoms %}
+                                <div class="col-md-6">
+                                    <div class="symptom-item">
+                                        <i class="fas fa-circle text-primary me-2" style="font-size: 0.5rem;"></i>
+                                        {{ symptom }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Remedies Tab -->
+                        <div class="tab-pane fade" id="remedies" role="tabpanel">
+                            <h5 class="mb-3">
+                                <i class="fas fa-medkit text-success me-2"></i>Recommended Treatments
+                            </h5>
+                            <div class="row">
+                                {% for remedy in disease_info.remedies %}
+                                <div class="col-md-6">
+                                    <div class="remedy-item">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        {{ remedy }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            {% if prediction.disease != 'healthy' %}
+                            <div class="alert alert-warning mt-4">
+                                <i class="fas fa-exclamation-triangle me-2"></i>
+                                <strong>Important:</strong> Consult with agricultural extension services or plant pathologists for severe infections. Early treatment is most effective.
+                            </div>
+                            {% endif %}
+                        </div>
+
+                        <!-- Prevention Tab -->
+                        <div class="tab-pane fade" id="prevention" role="tabpanel">
+                            <h5 class="mb-3">
+                                <i class="fas fa-shield-alt text-info me-2"></i>Prevention Strategies
+                            </h5>
+                            <div class="row">
+                                {% for prevention in disease_info.prevention %}
+                                <div class="col-md-6">
+                                    <div class="remedy-item">
+                                        <i class="fas fa-shield-alt text-info me-2"></i>
+                                        {{ prevention }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="alert alert-info mt-4">
+                                <i class="fas fa-lightbulb me-2"></i>
+                                <strong>Tip:</strong> Regular monitoring and preventive measures are key to maintaining healthy crops and preventing disease outbreaks.
+                            </div>
+                        </div>
+
+                        <!-- Detailed Analysis Tab -->
+                        {% if prediction.all_predictions %}
+                        <div class="tab-pane fade" id="detailed" role="tabpanel">
+                            <h5 class="mb-3">
+                                <i class="fas fa-chart-bar text-secondary me-2"></i>Detailed Prediction Scores
+                            </h5>
+                            <div class="row">
+                                {% for disease, confidence in prediction.all_predictions.items() %}
+                                <div class="col-md-6 mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-1">
+                                        <span class="fw-semibold">{{ disease.replace('_', ' ').title() }}</span>
+                                        <span class="text-muted">{{ "%.1f"|format(confidence * 100) }}%</span>
+                                    </div>
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar 
+                                            {% if disease == prediction.disease %}bg-primary{% else %}bg-light{% endif %}" 
+                                            style="width: {{ confidence * 100 }}%"></div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('upload_file') }}" class="btn btn-primary btn-lg me-3">
+                    <i class="fas fa-upload me-2"></i>Analyze Another Image
+                </a>
+                <a href="{{ url_for('diseases') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-book me-2"></i>Learn More About Diseases
+                </a>
+            </div>
+
+            <!-- Emergency Contact Info -->
+            {% if prediction.disease != 'healthy' %}
+            <div class="card mt-4 border-warning">
+                <div class="card-header bg-warning text-dark">
+                    <h6 class="mb-0">
+                        <i class="fas fa-phone me-2"></i>Need Professional Help?
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">For severe infections or if you're unsure about treatment:</p>
+                    <ul class="list-unstyled mb-0">
+                        <li><i class="fas fa-arrow-right text-warning me-2"></i>Contact your local agricultural extension office</li>
+                        <li><i class="fas fa-arrow-right text-warning me-2"></i>Consult with a certified plant pathologist</li>
+                        <li><i class="fas fa-arrow-right text-warning me-2"></i>Visit your nearest agricultural supply store</li>
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-focus on remedies tab if disease is detected
+    {% if prediction.disease != 'healthy' %}
+    const remediesTab = new bootstrap.Tab(document.getElementById('remedies-tab'));
+    setTimeout(() => {
+        remediesTab.show();
+    }, 2000);
+    {% endif %}
+});
+</script>
+{% endblock %}

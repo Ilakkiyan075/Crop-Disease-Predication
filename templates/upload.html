@@ -1,0 +1,197 @@
+{% extends "base.html" %}
+
+{% block title %}Upload - Crop Disease Detection{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="display-5 fw-bold text-primary">
+                    <i class="fas fa-upload me-3"></i>Disease Detection
+                </h1>
+                <p class="lead text-muted">Upload an image or video of your crop to detect diseases and get treatment recommendations</p>
+            </div>
+
+            <div class="card">
+                <div class="card-body p-5">
+                    <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt mb-3" style="font-size: 4rem; color: var(--accent-color);"></i>
+                                <h4 class="mb-3">Drop your files here or click to browse</h4>
+                                <p class="text-muted mb-4">
+                                    Supported formats: JPG, PNG, GIF, BMP, TIFF, MP4, AVI, MOV, MKV<br>
+                                    Maximum file size: 16MB
+                                </p>
+                                <input type="file" name="file" id="fileInput" class="d-none" accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.mp4,.avi,.mov,.mkv" required>
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                    <i class="fas fa-folder-open me-2"></i>Choose File
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="filePreview" class="mt-4" style="display: none;">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-file-image me-3 text-primary" style="font-size: 2rem;"></i>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1" id="fileName">Selected File</h6>
+                                            <small class="text-muted" id="fileSize">File size</small>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearFile()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg" id="submitBtn" disabled>
+                                <i class="fas fa-search me-2"></i>Detect Disease
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Loading Modal -->
+            <div class="modal fade" id="loadingModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body text-center p-5">
+                            <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;"></div>
+                            <h5>Analyzing your crop...</h5>
+                            <p class="text-muted mb-0">Our AI is detecting diseases and preparing recommendations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Instructions -->
+            <div class="row mt-5">
+                <div class="col-md-6">
+                    <div class="card border-0 bg-light h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-camera text-primary me-2"></i>
+                                Best Photo Tips
+                            </h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Take clear, well-lit photos</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Focus on affected plant parts</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Include leaves, stems, or fruits</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Avoid blurry or dark images</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card border-0 bg-light h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="fas fa-video text-primary me-2"></i>
+                                Video Guidelines
+                            </h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Keep videos under 16MB</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Show multiple angles</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Focus on problem areas</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Ensure good lighting</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('fileInput');
+    const uploadArea = document.getElementById('uploadArea');
+    const filePreview = document.getElementById('filePreview');
+    const submitBtn = document.getElementById('submitBtn');
+    const uploadForm = document.getElementById('uploadForm');
+    const loadingModal = new bootstrap.Modal(document.getElementById('loadingModal'));
+
+    // Drag and drop functionality
+    uploadArea.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--secondary-color)';
+        uploadArea.style.backgroundColor = '#f8fff8';
+    });
+
+    uploadArea.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--accent-color)';
+        uploadArea.style.backgroundColor = 'white';
+    });
+
+    uploadArea.addEventListener('drop', function(e) {
+        e.preventDefault();
+        uploadArea.style.borderColor = 'var(--accent-color)';
+        uploadArea.style.backgroundColor = 'white';
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            fileInput.files = files;
+            handleFileSelect();
+        }
+    });
+
+    // File input change
+    fileInput.addEventListener('change', handleFileSelect);
+
+    function handleFileSelect() {
+        const file = fileInput.files[0];
+        if (file) {
+            // Validate file type
+            const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/bmp', 'image/tiff', 'video/mp4', 'video/avi', 'video/mov', 'video/x-msvideo'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Please select a valid image or video file.');
+                clearFile();
+                return;
+            }
+
+            // Validate file size (16MB)
+            if (file.size > 16 * 1024 * 1024) {
+                alert('File size must be less than 16MB.');
+                clearFile();
+                return;
+            }
+
+            // Show file preview
+            document.getElementById('fileName').textContent = file.name;
+            document.getElementById('fileSize').textContent = formatFileSize(file.size);
+            filePreview.style.display = 'block';
+            submitBtn.disabled = false;
+        }
+    }
+
+    // Form submission
+    uploadForm.addEventListener('submit', function(e) {
+        loadingModal.show();
+    });
+
+    function formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    window.clearFile = function() {
+        fileInput.value = '';
+        filePreview.style.display = 'none';
+        submitBtn.disabled = true;
+    };
+});
+</script>
+{% endblock %}

@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}About - Crop Disease Detection{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">
+                    <i class="fas fa-info-circle me-3"></i>
+                    About CropCare AI
+                </h1>
+                <p class="lead mb-4">
+                    Empowering farmers with cutting-edge artificial intelligence to protect crops, increase yields, and ensure food security for the future.
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-microscope" style="font-size: 12rem; color: rgba(255,255,255,0.3);"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container my-5">
+    <!-- Mission Section -->
+    <div class="row mb-5">
+        <div class="col-lg-8 mx-auto text-center">
+            <h2 class="display-5 fw-bold mb-4">Our Mission</h2>
+            <p class="lead text-muted">
+                To revolutionize agriculture through AI-powered disease detection, helping farmers make informed decisions 
+                quickly and effectively to protect their crops and livelihoods.
+            </p>
+        </div>
+    </div>
+
+    <!-- Technology Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-cogs text-primary me-2"></i>
+                Technology Behind CropCare AI
+            </h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="card-body">
+                            <i class="fas fa-brain text-primary mb-3" style="font-size: 3rem;"></i>
+                            <h4>Deep Learning</h4>
+                            <p class="text-muted">
+                                Advanced Convolutional Neural Networks (CNNs) trained on thousands of crop images 
+                                for accurate disease identification.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="card-body">
+                            <i class="fas fa-eye text-primary mb-3" style="font-size: 3rem;"></i>
+                            <h4>Computer Vision</h4>
+                            <p class="text-muted">
+                                State-of-the-art image processing techniques to analyze plant health 
+                                from photos and videos with high precision.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100 text-center p-4">
+                        <div class="card-body">
+                            <i class="fas fa-mobile-alt text-primary mb-3" style="font-size: 3rem;"></i>
+                            <h4>Mobile-First</h4>
+                            <p class="text-muted">
+                                Optimized for mobile devices, allowing farmers to get instant results 
+                                directly in the field.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="bg-light rounded p-5 mb-5">
+        <h2 class="text-center mb-5">
+            <i class="fas fa-workflow text-primary me-2"></i>
+            How Our AI Works
+        </h2>
+        <div class="row">
+            <div class="col-md-6">
+                <h4 class="mb-3">1. Image Processing</h4>
+                <p class="mb-4">
+                    Our system uses advanced computer vision algorithms to preprocess and analyze uploaded images, 
+                    extracting key features that indicate plant health status.
+                </p>
+                
+                <h4 class="mb-3">2. Feature Extraction</h4>
+                <p class="mb-4">
+                    The AI model identifies patterns in leaf color, texture, spots, and other visual indicators 
+                    that are characteristic of specific diseases.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <h4 class="mb-3">3. Disease Classification</h4>
+                <p class="mb-4">
+                    Using transfer learning with MobileNetV2, our model classifies the detected patterns 
+                    into specific disease categories with confidence scores.
+                </p>
+                
+                <h4 class="mb-3">4. Treatment Recommendations</h4>
+                <p class="mb-4">
+                    Based on the identified disease, our system provides targeted treatment recommendations 
+                    and prevention strategies from our comprehensive database.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-star text-primary me-2"></i>
+                Key Features
+            </h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-upload text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5>Multi-Format Support</h5>
+                            <p class="text-muted">
+                                Upload images (JPG, PNG, GIF, BMP, TIFF) or videos (MP4, AVI, MOV, MKV) 
+                                for comprehensive analysis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-clock text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5>Real-Time Processing</h5>
+                            <p class="text-muted">
+                                Get disease detection results in seconds, enabling quick decision-making 
+                                for time-sensitive treatments.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-database text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5>Comprehensive Database</h5>
+                            <p class="text-muted">
+                                Extensive database of crop diseases with detailed symptoms, treatments, 
+                                and prevention strategies.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex">
+                        <div class="me-3">
+                            <i class="fas fa-chart-line text-primary" style="font-size: 2rem;"></i>
+                        </div>
+                        <div>
+                            <h5>Confidence Scoring</h5>
+                            <p class="text-muted">
+                                Each prediction comes with a confidence score, helping you understand 
+                                the reliability of the diagnosis.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Impact Section -->
+    <div class="card bg-primary text-white">
+        <div class="card-body p-5">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2 class="mb-3">Making a Real Impact</h2>
+                    <p class="lead mb-4">
+                        Our AI-powered solution helps farmers reduce crop losses, optimize treatment costs, 
+                        and improve overall farm productivity through early disease detection.
+                    </p>
+                    <div class="row">
+                        <div class="col-sm-4 text-center mb-3">
+                            <h3 class="display-6 fw-bold">95%</h3>
+                            <p class="mb-0">Accuracy Rate</p>
+                        </div>
+                        <div class="col-sm-4 text-center mb-3">
+                            <h3 class="display-6 fw-bold">&lt;3s</h3>
+                            <p class="mb-0">Processing Time</p>
+                        </div>
+                        <div class="col-sm-4 text-center mb-3">
+                            <h3 class="display-6 fw-bold">6+</h3>
+                            <p class="mb-0">Disease Types</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fas fa-chart-bar" style="font-size: 8rem; opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Technical Specifications -->
+    <div class="row mt-5">
+        <div class="col-lg-8 mx-auto">
+            <h2 class="text-center mb-5">
+                <i class="fas fa-code text-primary me-2"></i>
+                Technical Specifications
+            </h2>
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Backend Technology</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fab fa-python text-warning me-2"></i>Python 3.8+</li>
+                                <li><i class="fas fa-server text-success me-2"></i>Flask Web Framework</li>
+                                <li><i class="fas fa-brain text-info me-2"></i>TensorFlow/Keras</li>
+                                <li><i class="fas fa-eye text-primary me-2"></i>OpenCV</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-3">Frontend Technology</h5>
+                            <ul class="list-unstyled">
+                                <li><i class="fab fa-html5 text-danger me-2"></i>HTML5</li>
+                                <li><i class="fab fa-css3-alt text-primary me-2"></i>CSS3 + Bootstrap 5</li>
+                                <li><i class="fab fa-js text-warning me-2"></i>JavaScript</li>
+                                <li><i class="fas fa-mobile-alt text-success me-2"></i>Responsive Design</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-5">
+        <h3 class="mb-4">Ready to Protect Your Crops?</h3>
+        <p class="lead text-muted mb-4">
+            Start using CropCare AI today and join the agricultural revolution.
+        </p>
+        <a href="{{ url_for('upload_file') }}" class="btn btn-primary btn-lg me-3">
+            <i class="fas fa-upload me-2"></i>Try Disease Detection
+        </a>
+        <a href="{{ url_for('diseases') }}" class="btn btn-outline-primary btn-lg">
+            <i class="fas fa-book me-2"></i>Learn About Diseases
+        </a>
+    </div>
+</div>
+{% endblock %}
